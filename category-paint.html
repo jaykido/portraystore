@@ -17,382 +17,105 @@
     <script src="js/jquery.min.js" type="text/javascript"></script>
     <script src="js/bootstrap.min.js" type="text/javascript"></script>
     <script src="js/custom.js" type="text/javascript"></script>
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <script>
+      // Fetch the list of images from the server
+      fetch("http://localhost:3000/api/images")
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Received data:", data);
+          if (Array.isArray(data)) {
+            // Create body and container structure
+            const bodyElement = document.createElement("body");
+
+            const containerElement = document.createElement("div");
+            containerElement.classList.add("container");
+
+            const boxContentElement = document.createElement("div");
+            boxContentElement.classList.add("box-content");
+
+            const rowElement = document.createElement("div");
+            rowElement.classList.add("row");
+
+            // Append divs
+            boxContentElement.appendChild(rowElement);
+            containerElement.appendChild(boxContentElement);
+            bodyElement.appendChild(containerElement);
+
+            // Append the body to the document
+            document.documentElement.appendChild(bodyElement); // append to the entire document
+
+            // Create and append each product item
+            data.map((image, index) => {
+              console.log("Image at index", index, ":", image);
+
+              // Create product layout div
+              const productLayout = document.createElement("div");
+              productLayout.classList.add(
+                "product-layout",
+                "col-lg-3",
+                "col-md-3",
+                "col-sm-4",
+                "col-xs-12"
+              );
+
+              const productThumb = document.createElement("div");
+              productThumb.classList.add("product-thumb", "transiction");
+
+              const imageContainer = document.createElement("div");
+              imageContainer.classList.add("image");
+              imageContainer.style.position = "relative";
+
+              const link = document.createElement("a");
+              link.href = "single-product.html";
+
+              const imgElement = document.createElement("img");
+              imgElement.src = `http://localhost:3000/images/${image}`; // Set dynamic src
+              imgElement.classList.add("img-responsive"); // Use Bootstrap's img-responsive for responsiveness
+
+              link.appendChild(imgElement);
+              imageContainer.appendChild(link);
+              productThumb.appendChild(imageContainer);
+
+              // Create the caption
+              const caption = document.createElement("div");
+              caption.classList.add("caption");
+
+              const productName = document.createElement("div");
+              productName.classList.add("product-name");
+              const productLink = document.createElement("a");
+              productLink.href = "single-product.html";
+              productLink.innerText = `Painting ${index + 1}`;
+              productName.appendChild(productLink);
+
+              const price = document.createElement("div");
+              price.classList.add("price");
+              const priceNew = document.createElement("span");
+              priceNew.classList.add("price-new");
+              priceNew.innerText = "$35.40";
+              const priceOld = document.createElement("span");
+              priceOld.classList.add("price-old");
+              priceOld.innerText = "$52.20";
+
+              price.appendChild(priceNew);
+              price.appendChild(priceOld);
+
+              caption.appendChild(productName);
+              caption.appendChild(price);
+              productThumb.appendChild(caption);
+
+              // Append product layout to the row
+              rowElement.appendChild(productLayout);
+            });
+          } else {
+            console.error("Received data is not an array:", data);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching images:", error);
+        });
+    </script>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
   </head>
-  <body>
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-4 col-xs-12">
-          <div id="logo">
-            <a href="home.html" class="logo-text">
-              MUCHIRI.<span style="color: #7cb342; font-size: 40px">ART</span>
-            </a>
-          </div>
-        </div>
-        <div class="col-sm-5 col-xs-12"></div>
-        <div class="col-sm-3 col-xs-12">
-          <div class="row">
-            <div class="col-sm-12 col-xs-12">
-              <div class="col-sm-12 rmv-right-padding col-xs-6 pull-right">
-                <form id="form-currency">
-                  <div class="btn-group pull-right">
-                    <button
-                      data-toggle="dropdown"
-                      class="btn btn-primary dropdown-toggle"
-                    >
-                      <strong>$</strong>
-                      <span class="hidden-xs hidden-sm hidden-md"
-                        >Currency</span
-                      >
-                      <i class="fa fa-caret-down"></i>
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <button
-                          name="EUR"
-                          type="button"
-                          class="currency-select btn btn-link btn-block"
-                          style="text-align: left"
-                        >
-                          Ksh Shilling
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          name="EUR"
-                          type="button"
-                          class="currency-select btn btn-link btn-block"
-                          style="text-align: left"
-                        >
-                          € Euro
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          name="GBP"
-                          type="button"
-                          class="currency-select btn btn-link btn-block"
-                          style="text-align: left"
-                        >
-                          £ Pound Sterling
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          name="USD"
-                          type="button"
-                          class="currency-select btn btn-link btn-block"
-                          style="text-align: left"
-                        >
-                          $ US Dollar
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                </form>
-              </div>
-            </div>
-            <div class="col-sm-12 col-xs-12 margin-top">
-              <!-- <div class="input-group" id="search">
-                <input
-                  type="text"
-                  class="form-control search-box"
-                  placeholder="Search"
-                  value=""
-                  name="search"
-                />
-                <span class="input-group-btn">
-                  <button class="btn search-button" type="button">
-                    <i class="fa fa-search"></i>
-                  </button>
-                </span>
-              </div> -->
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="box latest-product-heading">
-        <!-- <div class="box-heading">
-          <h3>Latest Products</h3>
-        </div> -->
-        <div class="box-content">
-          <div class="row">
-            <div class="product-layout col-lg-3 col-md-3 col-sm-4 col-xs-12">
-              <div class="product-thumb transiction">
-                <div class="image" style="position: relative">
-                  <a href="single-product.html"
-                    ><img src="images/pro1.jpg" class="img-responsive"
-                  /></a>
-                  <div class="quickview">
-                    <a class="line" href="cart.html">
-                      <i class="fa fa-shopping-cart"></i
-                    ></a>
-                    <a class="line"> <i class="fa fa-heart-o"></i></a>
-                    <a class="line"> <i class="fa fa-refresh"></i></a>
-                  </div>
-                </div>
-                <div class="caption">
-                  <div class="product-name">
-                    <a href="single-product.html">Painting 01</a>
-                  </div>
-                  <div class="price">
-                    <span class="price-new">$34.90</span>
-                    <span class="price-old">$49.50</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="product-layout col-lg-3 col-md-3 col-sm-4 col-xs-12">
-              <div class="product-thumb transiction">
-                <div class="image" style="position: relative">
-                  <a href="single-product.html"
-                    ><img src="images/pro2.jpg" class="img-responsive"
-                  /></a>
-                  <div class="quickview">
-                    <a class="line" href="cart.html">
-                      <i class="fa fa-shopping-cart"></i
-                    ></a>
-                    <a class="line"> <i class="fa fa-heart-o"></i></a>
-                    <a class="line"> <i class="fa fa-refresh"></i></a>
-                  </div>
-                </div>
-                <div class="caption">
-                  <div class="product-name">
-                    <a href="single-product.html">Painting 02</a>
-                  </div>
-                  <div class="price">
-                    <span class="price-new">$35.40</span>
-                    <span class="price-old">$52.20</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="product-layout col-lg-3 col-md-3 col-sm-4 col-xs-12">
-              <div class="product-thumb transiction">
-                <div class="image" style="position: relative">
-                  <a href="single-product.html"
-                    ><img src="images/pro3.jpg" class="img-responsive"
-                  /></a>
-                  <div class="quickview">
-                    <a class="line" href="cart.html">
-                      <i class="fa fa-shopping-cart"></i
-                    ></a>
-                    <a class="line"> <i class="fa fa-heart-o"></i></a>
-                    <a class="line"> <i class="fa fa-refresh"></i></a>
-                  </div>
-                </div>
-                <div class="caption">
-                  <div class="product-name">
-                    <a href="single-product.html">Painting 03</a>
-                  </div>
-                  <div class="price">
-                    <span class="price-new">$58.00</span>
-                    <span class="price-old">$65</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="product-layout col-lg-3 col-md-3 col-sm-4 col-xs-12">
-              <div class="product-thumb transiction">
-                <div class="image" style="position: relative">
-                  <a href="single-product.html"
-                    ><img src="images/pro4.jpg" class="img-responsive"
-                  /></a>
-                  <div class="quickview">
-                    <a class="line"> <i class="fa fa-shopping-cart"></i></a>
-                    <a class="line"> <i class="fa fa-heart-o"></i></a>
-                    <a class="line"> <i class="fa fa-refresh"></i></a>
-                  </div>
-                </div>
-                <div class="caption">
-                  <div class="product-name">
-                    <a href="single-product.html">Painting 04</a>
-                  </div>
-                  <div class="price">
-                    <span class="price-new">$31.23</span>
-                    <span class="price-old">$47.20</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="product-layout col-lg-3 col-md-3 col-sm-4 col-xs-12">
-              <div class="product-thumb transiction">
-                <div class="image" style="position: relative">
-                  <a href="single-product.html"
-                    ><img src="images/pro5.jpg" class="img-responsive"
-                  /></a>
-                  <div class="quickview">
-                    <a class="line" href="cart.html">
-                      <i class="fa fa-shopping-cart"></i
-                    ></a>
-                    <a class="line"> <i class="fa fa-heart-o"></i></a>
-                    <a class="line"> <i class="fa fa-refresh"></i></a>
-                  </div>
-                </div>
-                <div class="caption">
-                  <div class="product-name">
-                    <a href="single-product.html">Drawing 01</a>
-                  </div>
-                  <div class="price">
-                    <span class="price-new">$41.52</span>
-                    <span class="price-old">$58.50</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="product-layout col-lg-3 col-md-3 col-sm-4 col-xs-12">
-              <div class="product-thumb transiction">
-                <div class="image" style="position: relative">
-                  <a href="single-product.html"
-                    ><img src="images/pro6.jpg" class="img-responsive"
-                  /></a>
-                  <div class="quickview">
-                    <a class="line" href="cart.html">
-                      <i class="fa fa-shopping-cart"></i
-                    ></a>
-                    <a class="line"> <i class="fa fa-heart-o"></i></a>
-                    <a class="line"> <i class="fa fa-refresh"></i></a>
-                  </div>
-                </div>
-                <div class="caption">
-                  <div class="product-name">
-                    <a href="single-product.html">Drawing 02</a>
-                  </div>
-                  <div class="price">
-                    <span class="price-new">$74</span>
-                    <span class="price-old">$85.23</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="product-layout col-lg-3 col-md-3 col-sm-4 col-xs-12">
-              <div class="product-thumb transiction">
-                <div class="image" style="position: relative">
-                  <a href="single-product.html"
-                    ><img src="images/pro7.jpg" class="img-responsive"
-                  /></a>
-                  <div class="quickview">
-                    <a class="line" href="cart.html">
-                      <i class="fa fa-shopping-cart"></i
-                    ></a>
-                    <a class="line"> <i class="fa fa-heart-o"></i></a>
-                    <a class="line"> <i class="fa fa-refresh"></i></a>
-                  </div>
-                </div>
-                <div class="caption">
-                  <div class="product-name">
-                    <a href="single-product.html">Drawing 03</a>
-                  </div>
-                  <div class="price">
-                    <span class="price-new">$36.10</span>
-                    <span class="price-old">$43.50</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="product-layout col-lg-3 col-md-3 col-sm-4 col-xs-12">
-              <div class="product-thumb transiction">
-                <div class="image" style="position: relative">
-                  <a href="single-product.html"
-                    ><img src="images/pro8.jpg" class="img-responsive"
-                  /></a>
-                  <div class="quickview">
-                    <a class="line" href="cart.html">
-                      <i class="fa fa-shopping-cart"></i
-                    ></a>
-                    <a class="line"> <i class="fa fa-heart-o"></i></a>
-                    <a class="line"> <i class="fa fa-refresh"></i></a>
-                  </div>
-                </div>
-                <div class="caption">
-                  <div class="product-name">
-                    <a href="single-product.html">Drawing 04</a>
-                  </div>
-                  <div class="price">
-                    <span class="price-new">$41.23</span>
-                    <span class="price-old">$49.50</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-3">
-            <div class="footer-block">
-              <h4>Information <i class="fa fa-angle-up"></i></h4>
-
-              <ul class="list-unstyled">
-                <li><a>About Us</a></li>
-                <li><a>Delivery Information</a></li>
-                <li><a>Privacy Policy</a></li>
-                <li><a>Terms &amp; Conditions</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="footer-block">
-              <h4>Why Buy From Us <i class="fa fa-angle-up"></i></h4>
-              <ul class="list-unstyled">
-                <li><a>Contact Us</a></li>
-                <li><a>Returns</a></li>
-                <li><a>Site Map</a></li>
-                <li><a>Affiliates</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="col-sm-3">
-            <div class="footer-block">
-              <h4>My Account <i class="fa fa-angle-up"></i></h4>
-              <ul class="list-unstyled">
-                <li><a>My Account</a></li>
-                <li><a>Order History</a></li>
-                <li><a>Wish List</a></li>
-                <li><a>Newsletter</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="footer-block">
-              <h4>NewsLetter <i class="fa fa-angle-up"></i></h4>
-              <ul class="list-unstyled">
-                <li>
-                  <p>
-                    subscribe to the mail if you want to touch with us as soon
-                    as possible if any enquiry to reach us
-                  </p>
-                </li>
-                <li>
-                  <div id="subscribe" class="input-group">
-                    <input
-                      type="text"
-                      name="subscribe"
-                      value=""
-                      class="form-control subscribe-box"
-                    />
-                    <span class="input-group-btn">
-                      <button type="button" class="btn subscribe-button">
-                        Subscribe
-                      </button>
-                    </span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="copyright">
-        <div class="container">
-          <!--Do not remove Backlink from footer of the template. To remove it you can purchase the Backlink !-->
-          © 2024 All right reserved. Designed by
-          <a href="https://jaymuriu.vercel.app/" target="_blank">Jay Muriu</a>
-        </div>
-      </div>
-    </footer>
-  </body>
 </html>
