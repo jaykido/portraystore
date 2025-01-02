@@ -769,19 +769,19 @@ footer h4 {
   min-height: 125px;
   border-bottom: 1px dashed #ddd;
 }
-.latest-product-heading .image::after,
+/* .latest-product-heading .image::after,
 .feature-product-heading .image::after,
 .product-list-img .image::after {
   background: rgba(38, 50, 56, 0.5);
   content: "";
-  height: 100%;
+  height: 50%;
   left: 0;
   position: absolute;
   top: 0;
   width: 100%;
   visibility: hidden;
   transition: ease 0.2s;
-}
+} */
 .latest-product-heading .product-thumb:hover .image:after,
 .feature-product-heading .product-thumb:hover .image:after,
 .product-list-img .product-thumb:hover .image:after {
